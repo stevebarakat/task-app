@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Form } from "remix";
 import TaskFormInput from "./TaskFormInput";
-import Button from "./Button";
+import { Button } from "./Button/Button";
 import { RiAddLine } from "react-icons/ri";
 import { BsPencil, BsSearch } from "react-icons/bs";
 import Hidden from "~/components/Hidden";

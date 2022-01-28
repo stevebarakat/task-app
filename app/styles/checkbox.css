@@ -1,0 +1,34 @@
+.checkbox {
+  position: relative;
+  top: 5px;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+  cursor: pointer;
+  border: 2px solid var(--light-gray);
+}
+
+.checkbox:active {
+  background: var(--active-color);
+}
+.checkbox:focus {
+  border: 3px solid var(--light-gray) !important;
+}
+.checkbox:checked {
+  background: var(---primary-dark);
+}
+.checkbox:checked::after {
+  content: "";
+  display: block;
+  background-color: var(--active-color);
+  width: 75%;
+  height: 75%;
+  position: relative;
+  top: 2px;
+  left: 2px;
+}
