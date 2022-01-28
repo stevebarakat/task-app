@@ -20,15 +20,14 @@ export default function TaskItem({
   i,
 }: any) {
   const fetcher = useFetcher();
-  const [isDragging, setIsDragging] = useState({ x: false, y: false });
+  const [isDraggingY, setIsDraggingY] = useState(false);
+  const [isDraggingX, setIsDraggingX] = useState(false);
   const { state } = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
 
   const ref = useMeasurePosition((pos: number) => {
     updatePosition(i, pos);
   });
-
-  const isDeleting = fetcher.submission?.formData.get("id") === task.id;
 
   const handleToggle = (event: {
     target: { value: string; checked: string };
@@ -104,7 +103,7 @@ export default function TaskItem({
 
   const handleDragEnd = useCallback(
     (info: PanInfo, taskId: string) => {
-      const dragDistance = isDragging.x ? info.offset.x : 0;
+      const dragDistance = isDraggingX ? info.offset.x : 0;
       const taskSwiped = state.tasks.filter(
         (task: { id: string }) => task.id === taskId
       )[0];
@@ -141,7 +140,7 @@ export default function TaskItem({
         });
       }
     },
-    [state.tasks, isDragging.x, handleSwipe, handleDelete]
+    [state.tasks, isDraggingX, handleSwipe, handleDelete]
   );
 
   const y = useMotionValue(null);
@@ -152,14 +151,13 @@ export default function TaskItem({
       exit={TASK_DELETE_ANIMATION}
       transition={TASK_DELETE_TRANSITION}
       className="task-item"
-      style={{ display: isDeleting ? "none" : "flex" }}
     >
       {/* FIRST */}
       <motion.div
         style={{
           x,
           y,
-          zIndex: isDragging.y ? 16 : 15,
+          zIndex: isDraggingY ? 16 : 15,
         }}
         drag="x"
         layout="position"
@@ -168,11 +166,7 @@ export default function TaskItem({
         transition={TASK_SWIPE_TRANSITION}
         onDragEnd={(_, info) => {
           handleDragEnd(info, task.id);
-          if (!isDragging.x)
-            setIsDragging({
-              ...isDragging,
-              x: false,
-            });
+          if (!isDraggingX) setIsDraggingX(false);
         }}
         dragConstraints={{
           left: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0,
@@ -181,15 +175,7 @@ export default function TaskItem({
         dragElastic={1}
         dragDirectionLock
         onDirectionLock={(axis) =>
-          axis === "x"
-            ? setIsDragging({
-                ...isDragging,
-                x: true,
-              })
-            : setIsDragging({
-                ...isDragging,
-                x: false,
-              })
+          axis === "x" ? setIsDraggingX(true) : setIsDraggingX(false)
         }
       >
         <fetcher.Form method="post">
@@ -239,29 +225,19 @@ export default function TaskItem({
           bottom: 0,
         }}
         onViewportBoxUpdate={(_, delta) => {
-          if (isDragging.y) {
+          if (isDraggingY) {
             updateOrder(i, delta.y.translate);
           }
           y.set(delta.y.translate);
         }}
         dragDirectionLock
         onDirectionLock={(axis) =>
-          axis === "y"
-            ? setIsDragging({
-                ...isDragging,
-                y: true,
-              })
-            : setIsDragging({
-                ...isDragging,
-                y: false,
-              })
+          axis === "y" ? setIsDraggingY(true) : setIsDraggingY(false)
         }
         onDragEnd={() => {
-          isDragging.y && handleDnd(newIds);
-          setIsDragging({
-            x: false,
-            y: false,
-          });
+          isDraggingY && handleDnd(newIds);
+          setIsDraggingY(false);
+          setIsDraggingX(false);
         }}
         className="drag-handle"
         style={{ x }}
@@ -269,7 +245,7 @@ export default function TaskItem({
         <MdDragHandle />
       </motion.div>
       <button
-        style={{ zIndex: isDragging.x ? 0 : -1 }}
+        style={{ zIndex: isDraggingX ? 0 : -1 }}
         className="delete-btn"
         onClick={() => handleDelete(task.id)}
       >
