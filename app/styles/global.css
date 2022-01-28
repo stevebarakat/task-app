@@ -92,6 +92,10 @@ input[type="checkbox"] {
   background: var(--active-color);
   border: none;
 }
+.delete-btn.hidden{
+  display: none;
+  z-index: -1;
+}
 .task-container {
   background: var(--primary-dark);
   display: flex;

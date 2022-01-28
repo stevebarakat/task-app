@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { TasksContext } from "~/state/context";
 
-export default function TextInput({ type, name, required, label }: any) {
+export default function TaskFormInput({ type, name, required, label }: any) {
   const [value, setValue] = useState("");
   const { state, dispatch } = useContext(TasksContext);
 

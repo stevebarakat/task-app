@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Form } from "remix";
-import TextInput from "./TextInput";
+import TaskFormInput from "./TaskFormInput";
 import Button from "./Button";
 import { RiAddLine } from "react-icons/ri";
 import { BsPencil, BsSearch } from "react-icons/bs";
@@ -26,7 +26,7 @@ export default function TaskForm() {
           name="position"
           value={state.tasks.length > 0 ? state.tasks.length : 1}
         />
-        <TextInput type="text" name="task-name" label="Add Task" required />
+        <TaskFormInput type="text" name="task-name" label="Add Task" required />
         <Button className="icon-btn">
           <RiAddLine />
         </Button>
@@ -45,7 +45,7 @@ export default function TaskForm() {
       <Form method="post" action="/actions" className="form-wrap">
         <Hidden name="actionName" value="create" />
         <Hidden name="position" value={state.tasks.length} />
-        <TextInput
+        <TaskFormInput
           type="search"
           name="search-tasks"
           label="Search Tasks"
