@@ -12,6 +12,15 @@ const DELETE_BTN_WIDTH = 70;
 const TASK_DELETE_ANIMATION = { height: 0, opacity: 0 };
 const TASK_DELETE_TRANSITION = { duration: 0.25 };
 const TASK_SWIPE_TRANSITION = { duration: 0.25, ease: "linear" };
+const initialTasks = [
+  {
+    id: "798df7s987",
+    position: 0,
+    name: "First Task (click to edit)",
+    isSwiped: false,
+    isCompleted: false,
+  },
+];
 
 export default function TaskItem({
   task,
@@ -22,7 +31,7 @@ export default function TaskItem({
   const fetcher = useFetcher();
   const [isDraggingY, setIsDraggingY] = useState(false);
   const [isDraggingX, setIsDraggingX] = useState(false);
-  const { state } = useContext(TasksContext);
+  const { state, dispatch } = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
 
   const ref = useMeasurePosition((pos: number) => {
@@ -119,7 +128,11 @@ export default function TaskItem({
         (dragDistance < -DELETE_BTN_WIDTH * 2 ||
           (taskSwiped.isSwiped && dragDistance < -DELETE_BTN_WIDTH - 10))
       ) {
-        handleDelete(taskId);
+        if (state.tasks.length > 1) {
+          handleDelete(taskId);
+        } else {
+          dispatch({ type: "SET_TASKS", payload: initialTasks });
+        }
         console.log("DELETE!");
       } else if (dragDistance > -DELETE_BTN_WIDTH && taskSwiped.isSwiped) {
         state.tasks.map((task: { id: string }) => {
@@ -140,7 +153,7 @@ export default function TaskItem({
         });
       }
     },
-    [state.tasks, isDraggingX, handleSwipe, handleDelete]
+    [state.tasks, isDraggingX, handleSwipe, handleDelete, dispatch]
   );
 
   const y = useMotionValue(null);

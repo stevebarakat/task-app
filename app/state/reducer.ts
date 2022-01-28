@@ -20,11 +20,6 @@ export function tasksReducer(state: StateProps, action: Action) {
         ...state,
         tasks: action.payload,
       };
-    case "SET_LOCAL_TASKS":
-      return {
-        ...state,
-        localTasks: action.payload,
-      };
     case "SET_FILTER_TYPE":
       return {
         ...state,

@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, createContext } from "react";
 import { useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
 import { TasksContext } from "~/state/context";
@@ -19,11 +19,22 @@ export const loader: LoaderFunction = async () => {
   return data;
 };
 
+const initialTasks = [
+  {
+    id: "fs78d90as0df0",
+    position: 0,
+    name: "First Task (click to edit)",
+    isSwiped: false,
+    isCompleted: false,
+  },
+];
+
+// export const TasksContext = createContext(initialState);
+
 const App = () => {
   const { loaderTasks } = useLoaderData();
-
   const initialState = {
-    tasks: loaderTasks,
+    tasks: loaderTasks.length > 0 ? loaderTasks : initialTasks,
     filterType: "all",
     isSearch: false,
     searchTerm: "",
@@ -31,13 +42,9 @@ const App = () => {
   const [state, dispatch] = useReducer(tasksReducer, initialState);
 
   useEffect(() => {
-    dispatch({ type: "SET_TASKS", payload: loaderTasks });
     dispatch({
-      type: "SET_LOCAL_TASKS",
-      payload: {
-        ...loaderTasks,
-        isSwiped: false,
-      },
+      type: "SET_TASKS",
+      payload: loaderTasks.length > 0 ? loaderTasks : initialTasks,
     });
   }, [loaderTasks]);
 
