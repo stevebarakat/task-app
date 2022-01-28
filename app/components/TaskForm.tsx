@@ -27,7 +27,7 @@ export default function TaskForm() {
           value={state.tasks.length > 0 ? state.tasks.length : 1}
         />
         <TaskFormInput type="text" name="task-name" label="Add Task" required />
-        <Button className="icon-btn">
+        <Button className="icon-btn" onClick={() => null}>
           <RiAddLine />
         </Button>
       </Form>
@@ -51,7 +51,7 @@ export default function TaskForm() {
           label="Search Tasks"
           required
         />
-        <Button className="icon-btn">
+        <Button onClick={() => null} className="icon-btn">
           <RiAddLine />
         </Button>
       </Form>
