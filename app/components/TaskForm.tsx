@@ -45,7 +45,12 @@ export default function TaskForm() {
       <Form method="post" action="/actions" className="form-wrap">
         <Hidden name="actionName" value="create" />
         <Hidden name="position" value={state.tasks.length} />
-        <TextInput type="text" name="task-name" label="Search Tasks" required />
+        <TextInput
+          type="search"
+          name="search-tasks"
+          label="Search Tasks"
+          required
+        />
         <Button className="icon-btn">
           <RiAddLine />
         </Button>
