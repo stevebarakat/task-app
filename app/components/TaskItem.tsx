@@ -20,7 +20,7 @@ export default function TaskItem({
   i,
 }: any) {
   const fetcher = useFetcher();
-  const [isDragging, setIsDragging] = useState(false);
+  const [isDraggingY, setIsDraggingY] = useState(false);
   const [isDraggingX, setIsDraggingX] = useState(false);
   const { state } = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
@@ -156,7 +156,8 @@ export default function TaskItem({
       <motion.div
         style={{
           x,
-          zIndex: isDragging ? 16 : 15,
+          y,
+          zIndex: isDraggingY ? 16 : 15,
         }}
         drag="x"
         layout="position"
@@ -165,6 +166,7 @@ export default function TaskItem({
         transition={TASK_SWIPE_TRANSITION}
         onDragEnd={(_, info) => {
           handleDragEnd(info, task.id);
+          if (!isDraggingX) setIsDraggingX(false);
         }}
         dragConstraints={{
           left: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0,
@@ -223,15 +225,19 @@ export default function TaskItem({
           bottom: 0,
         }}
         onViewportBoxUpdate={(_, delta) => {
-          if (isDragging) {
+          if (isDraggingY) {
             updateOrder(i, delta.y.translate);
           }
           y.set(delta.y.translate);
         }}
-        onDragStart={() => setIsDragging(true)}
+        dragDirectionLock
+        onDirectionLock={(axis) =>
+          axis === "y" ? setIsDraggingY(true) : setIsDraggingY(false)
+        }
         onDragEnd={() => {
-          !isDraggingX && handleDnd(newIds);
-          setIsDragging(false);
+          isDraggingY && handleDnd(newIds);
+          setIsDraggingY(false);
+          setIsDraggingX(false);
         }}
         className="drag-handle"
         style={{ x }}
@@ -239,7 +245,7 @@ export default function TaskItem({
         <MdDragHandle />
       </motion.div>
       <button
-        style={{ display: isDraggingX ? "flex" : "none" }}
+        style={{ zIndex: isDraggingX ? 0 : -1 }}
         className="delete-btn"
         onPointerDown={() => handleDelete(task.id)}
       >

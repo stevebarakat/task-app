@@ -79,7 +79,6 @@ input[type="checkbox"] {
 }
 
 .delete-btn {
-  z-index: 12;
   position: absolute;
   width: 70px;
   top: 50%;
