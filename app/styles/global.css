@@ -193,7 +193,7 @@ input[type="checkbox"] {
 .task-input-wrap {
   display: grid;
   margin: 0.5rem auto;
-  grid-template-columns: 1fr 9fr 1fr;
+  grid-template-columns: 1fr 9fr;
 }
 
 .task-input {
@@ -213,6 +213,7 @@ input[type="checkbox"] {
   transition: all 0.1s;
   touch-action: manipulation;
   border-radius: 0;
+  outline-offset: -3px;
 }
 /* .task-input:focus {
   outline: none;
@@ -258,14 +259,8 @@ input[type="checkbox"] {
   height: 100%;
 }
 
-.add-search:before {
-  content: "red";
-  position: absolute;
-  top: 0px;
-  /* transition: all 1s; */
-}
-.add-search:hover:before {
-  top: -32px;
+.form-wrap {
+  display: flex;
 }
 .icon-btn {
   border: 1px solid var(--light-gray);
@@ -274,13 +269,14 @@ input[type="checkbox"] {
   display: flex;
   background: var(--primary-dark);
   transition: background 0.1s;
+  outline-offset: -3px;
 }
-.icon-btn:first-of-type {
-  border-right: none;
+.form-wrap .icon-btn:first-of-type {
+  border-right: 1px solid var(--light-gray);
+  border-left: none;
 }
 .icon-btn:last-of-type {
-  border-left: none;
-  border-right: 1px solid var(--light-gray);
+  border-right: none;
 }
 .icon-btn:hover{
   background: var(--primary-light);
@@ -289,14 +285,16 @@ input[type="checkbox"] {
   content: "toggle";
   position: absolute;
   top: 0;
-  left: 0;
-  font-size: 1rem;
+  left: 4px;
+  font-size: 0.85rem;
   opacity: 0;
   transition: all 0.1s;
+  text-transform: capitalize;
+  font-weight: 700;
 }
 
 .icon-btn.toggle:hover:before{
-  top: -26px;
+  top: -2px;
   opacity: 1;
 }
 

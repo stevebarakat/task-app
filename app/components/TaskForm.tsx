@@ -21,7 +21,12 @@ export default function TaskForm() {
       >
         <BsPencil />
       </Button>
-      <Form method="post" action="/actions" key={location.key}>
+      <Form
+        method="post"
+        action="/actions"
+        key={location.key}
+        className="form-wrap"
+      >
         <Hidden name="actionName" value="create" />
         <Hidden name="position" value={state.tasks.length} />
         <TextInput
@@ -31,25 +36,40 @@ export default function TaskForm() {
           autofocus
           required
         />
+        <Button className="icon-btn">
+          <RiAddLine />
+        </Button>
       </Form>
-      <Button className="icon-btn">
-        <RiAddLine />
-      </Button>
     </div>
   ) : (
     <div className="task-input-wrap">
       <Button
-        className="icon-btn"
+        className="icon-btn toggle"
         onClick={() =>
           dispatch({ type: "SET_IS_SEARCH", payload: !state.isSearch })
         }
       >
         <BsSearch />
       </Button>
-      <TextInput type="text" name="search-term" label="Search Tasks" />
-      <Button className="icon-btn">
-        <RiAddLine />
-      </Button>
+      <Form
+        method="post"
+        action="/actions"
+        key={location.key}
+        className="form-wrap"
+      >
+        <Hidden name="actionName" value="create" />
+        <Hidden name="position" value={state.tasks.length} />
+        <TextInput
+          type="text"
+          name="task-name"
+          label="Search Tasks"
+          autofocus
+          required
+        />
+        <Button className="icon-btn">
+          <RiAddLine />
+        </Button>
+      </Form>
     </div>
   );
 }
