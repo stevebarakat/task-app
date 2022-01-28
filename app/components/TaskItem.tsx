@@ -34,7 +34,7 @@ export default function TaskItem({
   }) => {
     const { value, checked } = event.target;
     const task = state.tasks.find((task: { id: string }) => task.id === value);
-    task.isCompleted = checked;
+    task.isCompleted = checked === "checked";
     fetcher.submit(
       {
         actionName: "toggle",
@@ -156,6 +156,7 @@ export default function TaskItem({
       <motion.div
         style={{
           x,
+          y,
           zIndex: isDragging.y ? 16 : 15,
         }}
         drag="x"
@@ -170,6 +171,9 @@ export default function TaskItem({
               ...isDragging,
               x: false,
             });
+        }}
+        onViewportBoxUpdate={(_, delta) => {
+          x.set(delta.x.translate);
         }}
         dragConstraints={{
           left: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0,
@@ -239,7 +243,6 @@ export default function TaskItem({
           if (isDragging.y) {
             updateOrder(i, delta.y.translate);
           }
-          y.set(delta.y.translate);
         }}
         dragDirectionLock
         onDirectionLock={(axis) =>

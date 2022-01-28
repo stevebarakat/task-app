@@ -2,10 +2,13 @@ import { createContext } from "react";
 import type { Task } from "@prisma/client";
 
 interface StateProps {
-  tasks: Task[];
-  filterType: string;
-  isSearch: boolean;
-  searchTerm: string;
+  state: {
+    tasks: Task[];
+    filterType: string;
+    isSearch: boolean;
+    searchTerm: string;
+  };
+  dispatch: any;
 }
 
 const initialState: StateProps = {

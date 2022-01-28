@@ -15,5 +15,3 @@ export function usePositionReorder(tasks: Task[], dispatch: any) {
 
   return [updatePosition, updateOrder];
 }
-
-const buffer = 30;

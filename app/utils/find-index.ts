@@ -6,7 +6,7 @@ export interface Position {
 }
 
 // Prevent rapid reverse swapping
-const buffer = 5;
+const buffer = 30;
 
 export const findIndex = (
   i: number,
