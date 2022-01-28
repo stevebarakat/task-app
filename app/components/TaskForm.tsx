@@ -51,7 +51,7 @@ export default function TaskForm() {
           label="Search Tasks"
           required
         />
-        <Button onClick={() => null} className="icon-btn">
+        <Button className="icon-btn">
           <RiAddLine />
         </Button>
       </Form>

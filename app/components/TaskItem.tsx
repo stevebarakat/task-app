@@ -150,7 +150,7 @@ export default function TaskItem({
     <motion.li
       exit={TASK_DELETE_ANIMATION}
       transition={TASK_DELETE_TRANSITION}
-      className="task-item"
+      style={taskItem}
     >
       {/* FIRST */}
       <motion.div
@@ -158,11 +158,11 @@ export default function TaskItem({
           x,
           y,
           zIndex: isDragging.y ? 16 : 15,
+          ...taskContainer,
         }}
         drag="x"
         layout="position"
         animate={{ x: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0 }}
-        className="task-container"
         transition={TASK_SWIPE_TRANSITION}
         onDragEnd={(_, info) => {
           handleDragEnd(info, task.id);
@@ -179,7 +179,7 @@ export default function TaskItem({
           left: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0,
           right: task.isSwiped ? DELETE_BTN_WIDTH : 0,
         }}
-        dragElastic={1}
+        dragElastic={0.7}
         dragDirectionLock
         onDirectionLock={(axis) =>
           axis === "x"
@@ -214,14 +214,18 @@ export default function TaskItem({
             <input
               name="name"
               id={task.id}
-              style={
-                task.isCompleted
-                  ? {
-                      textDecoration: "line-through 2px #ABABAB",
-                    }
-                  : { textDecoration: "none" }
-              }
-              className="inline-text-input"
+              // style={
+              //   task.isCompleted
+              //     ? {
+              //         textDecoration: "line-through 2px #ABABAB",
+              //         ...inlineTextInput,
+              //       }
+              //     : { textDecoration: "none", ...inlineTextInput }
+              // }
+              style={{
+                textDecoration: task.isCompleted ? "line-through" : "none",
+                ...inlineTextInput,
+              }}
               defaultValue={task.name}
               autoComplete="off"
             />
@@ -234,10 +238,10 @@ export default function TaskItem({
         ref={ref}
         layout="position"
         drag="y"
-        dragElastic={0.7}
+        dragElastic={1}
         dragConstraints={{
-          top: 0,
-          bottom: 0,
+          top: 0.25,
+          bottom: 0.25,
         }}
         onViewportBoxUpdate={(_, delta) => {
           if (isDragging.y) {
@@ -263,13 +267,12 @@ export default function TaskItem({
             y: false,
           });
         }}
-        className="drag-handle"
-        style={{ x }}
+        style={{ x, ...dragHandle }}
       >
         <MdDragHandle />
       </motion.div>
       <Button
-        className={isDragging.x ? "delete-btn" : "delete-btn hidden"}
+        style={isDragging.x ? deleteBtn : hidden}
         onClick={() => handleDelete(task.id)}
       >
         Delete
@@ -277,3 +280,54 @@ export default function TaskItem({
     </motion.li>
   );
 }
+
+// STYLES
+
+const taskItem = {
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+};
+
+const taskContainer = {
+  background: "var(--primary-dark)",
+  display: "flex",
+  width: "100%",
+  height: "52px",
+  alignItems: "center",
+  borderBottom: "1px solid var(--light-gray)",
+};
+
+const inlineTextInput = {
+  width: "calc(100% - 35px)",
+  cursor: "grab",
+  outline: "none",
+  background: "none",
+  border: "none",
+};
+
+const dragHandle = {
+  position: "absolute",
+  right: "4px",
+  zIndex: 20,
+  cursor: "grab",
+};
+
+const deleteBtn = {
+  position: "absolute",
+  width: "70px",
+  top: "50%",
+  right: "0",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  transform: "translateY(-50%)",
+  color: "white",
+  fontSize: "1rem",
+  background: "var(--active-color)",
+  border: "none",
+};
+
+const hidden = {
+  display: "none",
+};

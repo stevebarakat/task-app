@@ -39,27 +39,6 @@ button {
   background: var(--primary-dark);
 }
 
-.task-item {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  border-bottom: 1px solid var(--light-gray);
-  align-items: center;
-  background: var(--primary-dark);
-}
-
-.inline-text-input {
-  width: 85%;
-  background: none;
-  border: none;
-  cursor: grab;
-}
-.inline-text-input:focus {
-  outline: none;
-  /* cursor: text; */
-}
-
 .task-item-output {
   width: 100%;
   max-width: 100%;
@@ -68,43 +47,6 @@ button {
 }
 
 /* SWIPE STYLE */
-
-.drag-handle {
-  position: absolute;
-  right: 4px;
-  z-index: 20;
-  cursor: grab;
-}
-
-
-.delete-btn {
-  position: absolute;
-  width: 70px;
-  top: 50%;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translateY(-50%);
-  color: white;
-  font-size: 1rem;
-  background: var(--active-color);
-  border: none;
-}
-.delete-btn.hidden{
-  display: none;
-  z-index: -1;
-}
-.task-container {
-  background: var(--primary-dark);
-  display: flex;
-  width: 100%;
-  height: 52px;
-  align-items: center;
-}
-.task-container:hover {
-  cursor: grab;
-}
 
 .radio-button {
   position: relative;
@@ -146,16 +88,7 @@ button {
   bottom: 2px;
   left: 2px;
 }
-.filter-form {
-  border-bottom: 1px dashed var(--light-gray);
-  padding: 4px 0 12px;
-  margin-bottom: 4px;
-  display: flex;
-  justify-content: space-between;
-}
-.option-wrap {
-  display: inline-block;
-}
+
 .checkbox {
   position: relative;
   top: 5px;
@@ -295,7 +228,7 @@ button {
   text-transform: capitalize;
   font-weight: 700;
   border: 1px solid var(--light-gray);
-  width: 105%;
+  width: 56px;
 }
 
 .icon-btn.toggle:hover:before{

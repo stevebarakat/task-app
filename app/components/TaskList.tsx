@@ -19,7 +19,7 @@ function TaskList() {
     dispatch
   );
   return (
-    <ul style={{ position: "relative" }}>
+    <ul>
       <AnimatePresence>
         {state.tasks
           ?.filter(FILTER_MAP[state.filterType])

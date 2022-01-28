@@ -5,12 +5,15 @@ export default function TasksFilter() {
   const { state, dispatch } = useContext(TasksContext);
   return (
     <form
-      className="filter-form"
+      style={filterForm}
       onChange={(e) =>
-        dispatch({ type: "SET_FILTER_TYPE", payload: e.target.value })
+        dispatch({
+          type: "SET_FILTER_TYPE",
+          payload: e.target as HTMLInputElement,
+        })
       }
     >
-      <div className="option-wrap">
+      <div>
         <label htmlFor="all">
           <input
             className="radio-button"
@@ -23,7 +26,7 @@ export default function TasksFilter() {
           All
         </label>
       </div>
-      <div className="option-wrap">
+      <div>
         <label htmlFor="todo">
           <input
             className="radio-button"
@@ -36,7 +39,7 @@ export default function TasksFilter() {
           To Do
         </label>
       </div>
-      <div className="option-wrap">
+      <div>
         <label htmlFor="completed">
           <input
             className="radio-button"
@@ -52,3 +55,12 @@ export default function TasksFilter() {
     </form>
   );
 }
+
+// STYLES
+const filterForm = {
+  display: "flex",
+  justifyContent: "space-between",
+  borderBottom: "1px dashed var(--light-gray)",
+  padding: "4px 0 12px",
+  marginBottom: "4px",
+};

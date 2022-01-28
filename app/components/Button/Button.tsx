@@ -1,14 +1,13 @@
-export const links = () => [{ rel: "stylesheet", href: styles }];
-
 interface ButtonProps {
   children?: React.ReactNode;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-  className: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  className?: string;
+  style?: unknown;
 }
 
-export function Button({ children, onClick, className }: ButtonProps) {
+export function Button({ children, onClick, className, style }: ButtonProps) {
   return (
-    <button type="submit" onClick={onClick} className={className}>
+    <button type="submit" onClick={onClick} className={className} style={style}>
       {children}
     </button>
   );

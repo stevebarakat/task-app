@@ -14,6 +14,7 @@ type Action =
   | { type: "SET_IS_SEARCH"; payload: boolean };
 
 export function tasksReducer(state: StateProps, action: Action) {
+  const { value }: any = action.payload;
   switch (action.type) {
     case "SET_TASKS":
       return {
@@ -23,7 +24,7 @@ export function tasksReducer(state: StateProps, action: Action) {
     case "SET_FILTER_TYPE":
       return {
         ...state,
-        filterType: action.payload,
+        filterType: value,
       };
     case "SET_SEARCH_TERM":
       return {
