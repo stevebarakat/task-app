@@ -12,7 +12,7 @@ export default function TaskFormInput({ type, name, required, label }: any) {
   }, [value, dispatch, state.isSearch]);
 
   return (
-    <div className="task-input-field">
+    <div style={taskInputField}>
       <input
         className="task-input"
         type={type}
@@ -26,9 +26,29 @@ export default function TaskFormInput({ type, name, required, label }: any) {
         }}
         required={required}
       />
-      <label className="task-input-label" htmlFor={name}>
+      <label style={taskInputLabel} htmlFor={name}>
         {label}
       </label>
     </div>
   );
 }
+
+// STYLES
+const taskInputLabel = {
+  color: "var(--light-gray)",
+  fontSize: "1rem",
+  lineHeight: "1.5rem",
+  fontWeight: "700",
+  transition: "all 0.2s",
+  touchAction: "manipulation",
+  pointerEvents: "none",
+};
+
+const taskInputField = {
+  display: "flex",
+  position: "relative",
+  flexGrow: "1",
+  top: "0",
+  width: "100%",
+  height: "100%",
+};

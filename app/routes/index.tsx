@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async () => {
   return data;
 };
 
-const App = () => {
+export default function App() {
   const { loaderTasks } = useLoaderData();
   const initialState = {
     tasks: loaderTasks,
@@ -37,7 +37,7 @@ const App = () => {
   }, [loaderTasks]);
 
   return (
-    <div className="container">
+    <div style={container}>
       <TasksContext.Provider value={{ state, dispatch }}>
         <TaskForm />
         <TasksFilter />
@@ -45,6 +45,12 @@ const App = () => {
       </TasksContext.Provider>
     </div>
   );
-};
+}
 
-export default App;
+// STYLES
+const container = {
+  maxWidth: "100%",
+  padding: "28px 16px",
+  border: "1px solid var(--light-gray)",
+  background: "var(--primary-dark)",
+};

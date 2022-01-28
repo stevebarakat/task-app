@@ -5,7 +5,7 @@ import { MdDragHandle } from "react-icons/md";
 import { useFetcher } from "remix";
 import { useMeasurePosition } from "~/hooks/useMeasurePosition";
 import Hidden from "./Hidden";
-import { Button } from "./Button/Button";
+import { Button } from "./Button";
 import { TasksContext } from "~/state/context";
 
 const DELETE_BTN_WIDTH = 70;

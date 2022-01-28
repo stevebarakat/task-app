@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Form } from "remix";
 import TaskFormInput from "./TaskFormInput";
-import { Button } from "./Button/Button";
+import { Button } from "./Button";
 import { RiAddLine } from "react-icons/ri";
 import { BsPencil, BsSearch } from "react-icons/bs";
 import Hidden from "~/components/Hidden";
@@ -11,7 +11,7 @@ export default function TaskForm() {
   const { state, dispatch } = useContext(TasksContext);
 
   return !state.isSearch ? (
-    <div className="task-input-wrap">
+    <div style={taskInputWrap}>
       <Button
         className="icon-btn toggle"
         onClick={() =>
@@ -20,7 +20,7 @@ export default function TaskForm() {
       >
         <BsPencil />
       </Button>
-      <Form method="post" action="/actions" className="form-wrap">
+      <Form method="post" action="/actions" style={{ display: "flex" }}>
         <Hidden name="actionName" value="create" />
         <Hidden
           name="position"
@@ -33,7 +33,7 @@ export default function TaskForm() {
       </Form>
     </div>
   ) : (
-    <div className="task-input-wrap">
+    <div style={taskInputWrap}>
       <Button
         className="icon-btn toggle"
         onClick={() =>
@@ -42,15 +42,10 @@ export default function TaskForm() {
       >
         <BsSearch />
       </Button>
-      <Form method="post" action="/actions" className="form-wrap">
+      <Form method="post" action="/actions" style={{ display: "flex" }}>
         <Hidden name="actionName" value="create" />
         <Hidden name="position" value={state.tasks.length} />
-        <TaskFormInput
-          type="search"
-          name="search-tasks"
-          label="Search Tasks"
-          required
-        />
+        <TaskFormInput type="search" name="search-tasks" label="Search Tasks" />
         <Button className="icon-btn">
           <RiAddLine />
         </Button>
@@ -58,3 +53,10 @@ export default function TaskForm() {
     </div>
   );
 }
+
+// STYLES
+const taskInputWrap = {
+  display: "grid",
+  margin: "0 auto 8px",
+  gridTemplateColumns: "1fr 9fr",
+};
