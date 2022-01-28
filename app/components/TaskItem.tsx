@@ -156,7 +156,6 @@ export default function TaskItem({
       <motion.div
         style={{
           x,
-          y,
           zIndex: isDraggingY ? 16 : 15,
         }}
         drag="x"
