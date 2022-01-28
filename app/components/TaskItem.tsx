@@ -247,7 +247,7 @@ export default function TaskItem({
       <button
         style={{ zIndex: isDraggingX ? 0 : -1 }}
         className="delete-btn"
-        onPointerDown={() => handleDelete(task.id)}
+        onClick={() => handleDelete(task.id)}
       >
         Delete
       </button>

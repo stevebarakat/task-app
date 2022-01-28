@@ -34,7 +34,7 @@ button {
 .container {
   /* width: 375px; */
   max-width: 100%;
-  padding: 16px;
+  padding: 28px 16px;
   border: 1px solid var(--light-gray);
   background: var(--primary-dark);
 }
@@ -191,7 +191,7 @@ input[type="checkbox"] {
 
 .task-input-wrap {
   display: grid;
-  margin: 0.5rem auto;
+  margin: 0 auto 8px;
   grid-template-columns: 1fr 9fr;
 }
 
@@ -281,19 +281,21 @@ input[type="checkbox"] {
   background: var(--primary-light);
 }
 .icon-btn.toggle:before{
-  content: "toggle";
+  content: "⬇︎toggle";
   position: absolute;
   top: 0;
-  left: 4px;
-  font-size: 0.85rem;
+  left: -1px;
+  font-size: 0.75rem;
   opacity: 0;
   transition: all 0.1s;
   text-transform: capitalize;
   font-weight: 700;
+  border: 1px solid var(--light-gray);
+  width: 105%;
 }
 
 .icon-btn.toggle:hover:before{
-  top: -2px;
+  top: -20px;
   opacity: 1;
 }
 

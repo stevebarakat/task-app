@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Form, useLocation } from "remix";
+import { Form } from "remix";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import { RiAddLine } from "react-icons/ri";
@@ -8,7 +8,6 @@ import Hidden from "~/components/Hidden";
 import { TasksContext } from "~/state/context";
 
 export default function TaskForm() {
-  const location = useLocation(); // resets form after submit
   const { state, dispatch } = useContext(TasksContext);
 
   return !state.isSearch ? (
@@ -21,24 +20,13 @@ export default function TaskForm() {
       >
         <BsPencil />
       </Button>
-      <Form
-        method="post"
-        action="/actions"
-        key={location.key}
-        className="form-wrap"
-      >
+      <Form method="post" action="/actions" className="form-wrap">
         <Hidden name="actionName" value="create" />
         <Hidden
           name="position"
           value={state.tasks.length > 0 ? state.tasks.length : 1}
         />
-        <TextInput
-          type="text"
-          name="task-name"
-          label="Add Task"
-          autofocus
-          required
-        />
+        <TextInput type="text" name="task-name" label="Add Task" required />
         <Button className="icon-btn">
           <RiAddLine />
         </Button>
@@ -54,21 +42,10 @@ export default function TaskForm() {
       >
         <BsSearch />
       </Button>
-      <Form
-        method="post"
-        action="/actions"
-        key={location.key}
-        className="form-wrap"
-      >
+      <Form method="post" action="/actions" className="form-wrap">
         <Hidden name="actionName" value="create" />
         <Hidden name="position" value={state.tasks.length} />
-        <TextInput
-          type="text"
-          name="task-name"
-          label="Search Tasks"
-          autofocus
-          required
-        />
+        <TextInput type="text" name="task-name" label="Search Tasks" required />
         <Button className="icon-btn">
           <RiAddLine />
         </Button>
