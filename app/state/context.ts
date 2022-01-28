@@ -11,9 +11,9 @@ interface StateProps {
 const initialState: StateProps = {
   tasks: [
     {
-      id: "dfgd56",
+      id: "",
       position: 0,
-      name: "Task Zero",
+      name: "",
       isSwiped: false,
       isCompleted: false,
     },

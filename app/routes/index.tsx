@@ -19,22 +19,10 @@ export const loader: LoaderFunction = async () => {
   return data;
 };
 
-const initialTasks = [
-  {
-    id: "fs78d90as0df0",
-    position: 0,
-    name: "First Task (click to edit)",
-    isSwiped: false,
-    isCompleted: false,
-  },
-];
-
-// export const TasksContext = createContext(initialState);
-
 const App = () => {
   const { loaderTasks } = useLoaderData();
   const initialState = {
-    tasks: loaderTasks.length > 0 ? loaderTasks : initialTasks,
+    tasks: loaderTasks,
     filterType: "all",
     isSearch: false,
     searchTerm: "",
@@ -44,7 +32,7 @@ const App = () => {
   useEffect(() => {
     dispatch({
       type: "SET_TASKS",
-      payload: loaderTasks.length > 0 ? loaderTasks : initialTasks,
+      payload: loaderTasks,
     });
   }, [loaderTasks]);
 

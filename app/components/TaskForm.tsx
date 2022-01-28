@@ -28,7 +28,10 @@ export default function TaskForm() {
         className="form-wrap"
       >
         <Hidden name="actionName" value="create" />
-        <Hidden name="position" value={state.tasks.length} />
+        <Hidden
+          name="position"
+          value={state.tasks.length > 0 ? state.tasks.length : 1}
+        />
         <TextInput
           type="text"
           name="task-name"
