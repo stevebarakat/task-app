@@ -214,14 +214,6 @@ export default function TaskItem({
             <input
               name="name"
               id={task.id}
-              // style={
-              //   task.isCompleted
-              //     ? {
-              //         textDecoration: "line-through 2px #ABABAB",
-              //         ...inlineTextInput,
-              //       }
-              //     : { textDecoration: "none", ...inlineTextInput }
-              // }
               style={{
                 textDecoration: task.isCompleted ? "line-through" : "none",
                 ...inlineTextInput,
@@ -247,6 +239,7 @@ export default function TaskItem({
           if (isDragging.y) {
             updateOrder(i, delta.y.translate);
           }
+          y.set(delta.y.translate);
         }}
         dragDirectionLock
         onDirectionLock={(axis) =>
@@ -267,7 +260,7 @@ export default function TaskItem({
             y: false,
           });
         }}
-        style={{ x, ...dragHandle }}
+        style={{ x, zIndex: isDragging.y ? 16 : 15, ...dragHandle }}
       >
         <MdDragHandle />
       </motion.div>
@@ -309,7 +302,6 @@ const inlineTextInput = {
 const dragHandle = {
   position: "absolute",
   right: "4px",
-  zIndex: 20,
   cursor: "grab",
 };
 
