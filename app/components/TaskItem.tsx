@@ -25,7 +25,7 @@ export default function TaskItem({
   const { state } = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
 
-  const ref = useMeasurePosition((pos: number) => {
+  const dragHandelRef = useMeasurePosition((pos: number) => {
     updatePosition(i, pos);
   });
 
@@ -161,19 +161,14 @@ export default function TaskItem({
           ...taskContainer,
         }}
         drag="x"
-        layout="position"
         animate={{ x: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0 }}
         transition={TASK_SWIPE_TRANSITION}
         onDragEnd={(_, info) => {
-          handleDragEnd(info, task.id);
-          if (!isDragging.x)
-            setIsDragging({
-              ...isDragging,
-              x: false,
-            });
-        }}
-        onViewportBoxUpdate={(_, delta) => {
-          x.set(delta.x.translate);
+          isDragging.x && handleDragEnd(info, task.id);
+          setIsDragging({
+            y: false,
+            ...isDragging,
+          });
         }}
         dragConstraints={{
           left: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0,
@@ -182,15 +177,11 @@ export default function TaskItem({
         dragElastic={0.7}
         dragDirectionLock
         onDirectionLock={(axis) =>
-          axis === "x"
-            ? setIsDragging({
-                ...isDragging,
-                x: true,
-              })
-            : setIsDragging({
-                ...isDragging,
-                x: false,
-              })
+          axis === "x" &&
+          setIsDragging({
+            x: true,
+            y: false,
+          })
         }
       >
         <fetcher.Form method="post">
@@ -227,7 +218,7 @@ export default function TaskItem({
 
       {/* SECOND */}
       <motion.div
-        ref={ref}
+        ref={dragHandelRef}
         layout="position"
         drag="y"
         dragElastic={1}
@@ -243,15 +234,11 @@ export default function TaskItem({
         }}
         dragDirectionLock
         onDirectionLock={(axis) =>
-          axis === "y"
-            ? setIsDragging({
-                ...isDragging,
-                y: true,
-              })
-            : setIsDragging({
-                ...isDragging,
-                y: false,
-              })
+          axis === "y" &&
+          setIsDragging({
+            y: true,
+            x: false,
+          })
         }
         onDragEnd={() => {
           isDragging.y && handleDnd(newIds);
