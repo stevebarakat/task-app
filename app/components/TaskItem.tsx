@@ -1,7 +1,6 @@
 import type { Task } from "@prisma/client";
 import { useState, useContext, useCallback } from "react";
-import { motion, useMotionValue, PanInfo } from "framer-motion";
-import { MdDragHandle } from "react-icons/md";
+import { motion, PanInfo } from "framer-motion";
 import { useFetcher } from "remix";
 import { useMeasurePosition } from "~/hooks/useMeasurePosition";
 import Hidden from "./Hidden";
@@ -22,7 +21,7 @@ export default function TaskItem({
 }: any) {
   const fetcher = useFetcher();
   const [isDragging, setIsDragging] = useState({ x: false, y: false });
-  const { state } = useContext(TasksContext);
+  const { state, dispatch } = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
 
   const dragHandelRef = useMeasurePosition((pos: number) => {
@@ -73,19 +72,26 @@ export default function TaskItem({
     [fetcher]
   );
 
+  let localTasks = [];
   const handleSwipe = useCallback(
-    (taskId: string, isSwiped: string) => {
-      const id = taskId;
-      fetcher.submit(
-        {
-          actionName: "swipe",
-          id,
+    (task: any, isSwiped: boolean) => {
+      let swipedTask = {};
+      if (i === task.position) {
+        swipedTask = {
+          ...task,
           isSwiped,
-        },
-        { method: "post", action: "/actions", replace: true }
-      );
+        };
+        localTasks.push(swipedTask);
+      } else if (i !== task.position) {
+        swipedTask = state.tasks[task.position];
+        localTasks.push(swipedTask);
+      }
+      // console.log(swipedTask);
+      // return swipedTask;
+      console.log(localTasks);
+      dispatch({ type: "SET_TASKS", payload: localTasks });
     },
-    [fetcher]
+    [state, dispatch, i, localTasks]
   );
 
   const handleDnd = useCallback(
@@ -113,7 +119,14 @@ export default function TaskItem({
         dragDistance > -DELETE_BTN_WIDTH / 3 &&
         !taskSwiped.isSwiped
       ) {
-        console.log("ignore");
+        state.tasks.map((task: { position: number }) => {
+          if (task.position === i) {
+            handleSwipe(task, false);
+          } else {
+            handleSwipe(task, true);
+          }
+        });
+        console.log("IGNORE");
       } else if (
         dragDistance < 0 &&
         (dragDistance < -DELETE_BTN_WIDTH * 2 ||
@@ -122,29 +135,27 @@ export default function TaskItem({
         handleDelete(taskId);
         console.log("DELETE!");
       } else if (dragDistance > -DELETE_BTN_WIDTH && taskSwiped.isSwiped) {
-        state.tasks.map((task: { id: string }) => {
-          if (task.id === taskId) {
-            handleSwipe(task.id, "false");
+        state.tasks.map((task: { position: number }) => {
+          if (task.position === i) {
+            handleSwipe(task, false);
+          } else {
+            handleSwipe(task, true);
           }
-          return null;
         });
         console.log("RESET");
       } else if (dragDistance < 0 && dragDistance <= -DELETE_BTN_WIDTH / 3) {
-        state.tasks.map((task: { id: string }) => {
-          if (task.id === taskId) {
-            handleSwipe(task.id, "true");
+        state.tasks.map((task: { position: number }) => {
+          if (task.position === i) {
+            handleSwipe(task, true);
           } else {
-            handleSwipe(task.id, "false");
+            handleSwipe(task, false);
           }
-          return null;
         });
+        console.log("SWIPED");
       }
     },
-    [state.tasks, isDragging.x, handleSwipe, handleDelete]
+    [state.tasks, isDragging, handleSwipe, handleDelete, task, i]
   );
-
-  const y = useMotionValue(null);
-  const x = useMotionValue(null);
 
   return (
     <motion.li
@@ -154,34 +165,42 @@ export default function TaskItem({
     >
       {/* FIRST */}
       <motion.div
+        ref={dragHandelRef}
+        layout="position"
         style={{
-          x,
-          y,
           zIndex: isDragging.y ? 16 : 15,
           ...taskContainer,
         }}
-        drag="x"
+        drag
         animate={{ x: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0 }}
         transition={TASK_SWIPE_TRANSITION}
         onDragEnd={(_, info) => {
           isDragging.x && handleDragEnd(info, task.id);
-          setIsDragging({
-            y: false,
-            ...isDragging,
-          });
+          isDragging.y && handleDnd(newIds);
+        }}
+        onViewportBoxUpdate={(_, delta) => {
+          if (isDragging.y) {
+            updateOrder(i, delta.y.translate);
+          }
         }}
         dragConstraints={{
+          top: 0.25,
+          bottom: 0.25,
           left: task.isSwiped ? DELETE_BTN_WIDTH * -1 : 0,
           right: task.isSwiped ? DELETE_BTN_WIDTH : 0,
         }}
-        dragElastic={0.7}
+        dragElastic={isDragging.x ? 0.5 : 1}
         dragDirectionLock
         onDirectionLock={(axis) =>
-          axis === "x" &&
-          setIsDragging({
-            x: true,
-            y: false,
-          })
+          axis === "x"
+            ? setIsDragging({
+                x: true,
+                y: false,
+              })
+            : setIsDragging({
+                x: false,
+                y: true,
+              })
         }
       >
         <fetcher.Form method="post">
@@ -216,41 +235,6 @@ export default function TaskItem({
         </fetcher.Form>
       </motion.div>
 
-      {/* SECOND */}
-      <motion.div
-        ref={dragHandelRef}
-        layout="position"
-        drag="y"
-        dragElastic={1}
-        dragConstraints={{
-          top: 0.25,
-          bottom: 0.25,
-        }}
-        onViewportBoxUpdate={(_, delta) => {
-          if (isDragging.y) {
-            updateOrder(i, delta.y.translate);
-          }
-          y.set(delta.y.translate);
-        }}
-        dragDirectionLock
-        onDirectionLock={(axis) =>
-          axis === "y" &&
-          setIsDragging({
-            y: true,
-            x: false,
-          })
-        }
-        onDragEnd={() => {
-          isDragging.y && handleDnd(newIds);
-          setIsDragging({
-            x: false,
-            y: false,
-          });
-        }}
-        style={{ x, zIndex: isDragging.y ? 16 : 15, ...dragHandle }}
-      >
-        <MdDragHandle />
-      </motion.div>
       <Button
         style={isDragging.x ? deleteBtn : hidden}
         onClick={() => handleDelete(task.id)}
@@ -286,12 +270,6 @@ const inlineTextInput = {
   border: "none",
 };
 
-const dragHandle = {
-  position: "absolute",
-  right: "4px",
-  cursor: "grab",
-};
-
 const deleteBtn = {
   position: "absolute",
   width: "70px",
@@ -310,3 +288,14 @@ const deleteBtn = {
 const hidden = {
   display: "none",
 };
+function newTasks() {
+  throw new Error("Function not implemented.");
+}
+
+function handleDelete(taskId: string) {
+  throw new Error("Function not implemented.");
+}
+
+function handleSwipe(position: number, arg1: boolean) {
+  throw new Error("Function not implemented.");
+}

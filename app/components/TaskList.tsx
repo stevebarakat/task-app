@@ -2,7 +2,6 @@ import { useContext } from "react";
 import type { Task } from "@prisma/client";
 import { AnimatePresence } from "framer-motion";
 import TaskItem from "~/components/TaskItem";
-import NoDrag from "~/components/NoDrag";
 import { usePositionReorder } from "~/hooks/usePositionReorder";
 import { TasksContext } from "~/state/context";
 
@@ -28,7 +27,6 @@ function TaskList() {
             task.name.toLowerCase().includes(state.searchTerm)
           )
           .map((task: Task, i: number) => (
-            // <NoDrag
             <TaskItem
               i={i}
               updateOrder={updateOrder}
