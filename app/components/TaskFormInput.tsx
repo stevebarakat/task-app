@@ -1,15 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { TasksContext } from "~/state/context";
 
 export default function TaskFormInput({ type, name, required, label }: any) {
-  const [value, setValue] = useState("");
   const { state, dispatch } = useContext(TasksContext);
 
   useEffect(() => {
     state.isSearch
-      ? dispatch({ type: "SET_SEARCH_TERM", payload: value })
+      ? dispatch({ type: "SET_SEARCH_TERM", payload: state.value })
       : null;
-  }, [value, dispatch, state.isSearch]);
+  }, [dispatch, state.isSearch, state.value]);
 
   return (
     <div style={taskInputField}>
@@ -20,9 +19,10 @@ export default function TaskFormInput({ type, name, required, label }: any) {
         name={name}
         placeholder=" "
         autoComplete="off"
-        value={value}
+        value={state.value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setValue(e.target.value);
+          // setValue(e.target.value);
+          dispatch({ type: "SET_VALUE", payload: e.target.value });
         }}
         required={required}
       />
