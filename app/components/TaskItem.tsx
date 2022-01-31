@@ -162,7 +162,7 @@ export default function TaskItem({
     <motion.li
       exit={TASK_DELETE_ANIMATION}
       transition={TASK_DELETE_TRANSITION}
-      style={isDeleting ? { visibility: "hidden" } : taskItem}
+      style={isDeleting ? { display: "none" } : taskItem}
     >
       {/* FIRST */}
       <motion.div
