@@ -24,8 +24,12 @@ export default function TaskItem({
   const { state, dispatch } = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
   const localTasks = [];
-  const isDeleting = fetcher.submission?.formData.get("id") === task.id;
-
+  const [currentTask, setCurrentTask] = useState(
+    fetcher.submission?.formData.get("id") === task.id
+  );
+  const isDeleting =
+    fetcher.submission?.formData.get("id") === task.id &&
+    fetcher.submission?.formData.get("actionName") === "delete";
   const dragHandelRef = useMeasurePosition((pos: number) => {
     updatePosition(i, pos);
   });
@@ -35,6 +39,7 @@ export default function TaskItem({
   }) => {
     const { value, checked } = event.target;
     const task = state.tasks.find((task: { id: string }) => task.id === value);
+    setCurrentTask((task) => !task);
     task.isCompleted = checked === "checked";
     fetcher.submit(
       {
@@ -162,7 +167,7 @@ export default function TaskItem({
     <motion.li
       exit={TASK_DELETE_ANIMATION}
       transition={TASK_DELETE_TRANSITION}
-      style={isDeleting ? { display: "none" } : taskItem}
+      style={isDeleting ? { visibility: "hidden" } : taskItem}
     >
       {/* FIRST */}
       <motion.div
@@ -226,7 +231,8 @@ export default function TaskItem({
               name="name"
               id={task.id}
               style={{
-                textDecoration: task.isCompleted ? "line-through" : "none",
+                textDecoration:
+                  task.isCompleted || currentTask ? "line-through" : "none",
                 ...inlineTextInput,
               }}
               defaultValue={task.name}
