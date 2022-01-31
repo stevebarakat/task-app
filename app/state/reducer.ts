@@ -42,6 +42,8 @@ export function tasksReducer(state: StateProps, action: Action) {
       return {
         ...state,
         isSearch: action.payload,
+        value: "",
+        searchTerm: "",
       };
     default:
       return state;

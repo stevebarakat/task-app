@@ -22,7 +22,10 @@ export default function TaskForm() {
       </Button>
       <Form
         method="post"
-        onSubmit={() => dispatch({ type: "SET_VALUE", payload: "" })}
+        onSubmit={() => {
+          dispatch({ type: "SET_VALUE", payload: "" });
+          // dispatch({ type: "SET_SEARCH_TERM", payload: "" });
+        }}
         action="/actions"
         style={{ display: "flex" }}
       >
