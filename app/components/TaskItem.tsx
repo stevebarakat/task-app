@@ -24,6 +24,7 @@ export default function TaskItem({
   const { state, dispatch } = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
   const localTasks = [];
+  const isDeleting = fetcher.submission?.formData.get("id") === task.id;
 
   const dragHandelRef = useMeasurePosition((pos: number) => {
     updatePosition(i, pos);
@@ -161,7 +162,7 @@ export default function TaskItem({
     <motion.li
       exit={TASK_DELETE_ANIMATION}
       transition={TASK_DELETE_TRANSITION}
-      style={taskItem}
+      style={isDeleting ? { visibility: "hidden" } : taskItem}
     >
       {/* FIRST */}
       <motion.div
@@ -288,14 +289,3 @@ const deleteBtn = {
 const hidden = {
   display: "none",
 };
-function newTasks() {
-  throw new Error("Function not implemented.");
-}
-
-function handleDelete(taskId: string) {
-  throw new Error("Function not implemented.");
-}
-
-function handleSwipe(position: number, arg1: boolean) {
-  throw new Error("Function not implemented.");
-}
