@@ -6,6 +6,7 @@ interface StateProps {
   filterType: string;
   isSearch: boolean;
   searchTerm: string;
+  value: string;
 }
 
 const initialState: StateProps = {
@@ -15,6 +16,7 @@ const initialState: StateProps = {
       position: 0,
       name: "",
       isCompleted: false,
+      value: "",
     },
   ],
   filterType: "all",

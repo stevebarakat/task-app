@@ -5,11 +5,13 @@ interface StateProps {
   filterType: string;
   isSearch: boolean;
   searchTerm: string;
+  value: string;
 }
 type Action =
   | { type: "SET_TASKS"; payload: Task }
   | { type: "SET_LOCAL_TASKS"; payload: Task }
   | { type: "SET_FILTER_TYPE"; payload: string }
+  | { type: "SET_VALUE"; payload: string }
   | { type: "SET_SEARCH_TERM"; payload: string }
   | { type: "SET_IS_SEARCH"; payload: boolean };
 
@@ -25,6 +27,11 @@ export function tasksReducer(state: StateProps, action: Action) {
       return {
         ...state,
         filterType: value,
+      };
+    case "SET_VALUE":
+      return {
+        ...state,
+        value: action.payload,
       };
     case "SET_SEARCH_TERM":
       return {

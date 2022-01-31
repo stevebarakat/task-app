@@ -20,7 +20,12 @@ export default function TaskForm() {
       >
         <BsPencil />
       </Button>
-      <Form method="post" action="/actions" style={{ display: "flex" }}>
+      <Form
+        method="post"
+        onSubmit={() => dispatch({ type: "SET_VALUE", payload: "" })}
+        action="/actions"
+        style={{ display: "flex" }}
+      >
         <Hidden name="actionName" value="create" />
         <Hidden
           name="position"

@@ -19,9 +19,8 @@ export default function TaskFormInput({ type, name, required, label }: any) {
         name={name}
         placeholder=" "
         autoComplete="off"
-        value={state.value}
+        value={state.value || ""}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          // setValue(e.target.value);
           dispatch({ type: "SET_VALUE", payload: e.target.value });
         }}
         required={required}
