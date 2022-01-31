@@ -1,5 +1,5 @@
-import type { Task } from "@prisma/client";
 import { useState, useContext, useCallback } from "react";
+import type { Task } from "@prisma/client";
 import { motion, PanInfo } from "framer-motion";
 import { useFetcher } from "remix";
 import { useMeasurePosition } from "~/hooks/useMeasurePosition";
@@ -23,6 +23,7 @@ export default function TaskItem({
   const [isDragging, setIsDragging] = useState({ x: false, y: false });
   const { state, dispatch } = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
+  const localTasks = [];
 
   const dragHandelRef = useMeasurePosition((pos: number) => {
     updatePosition(i, pos);
@@ -72,7 +73,6 @@ export default function TaskItem({
     [fetcher]
   );
 
-  let localTasks = [];
   const handleSwipe = useCallback(
     (task: any, isSwiped: boolean) => {
       let swipedTask = {};
@@ -83,15 +83,15 @@ export default function TaskItem({
         };
         localTasks.push(swipedTask);
       } else if (i !== task.position) {
-        swipedTask = state.tasks[task.position];
+        swipedTask = {
+          ...task,
+          isSwiped: false,
+        };
         localTasks.push(swipedTask);
       }
-      // console.log(swipedTask);
-      // return swipedTask;
-      console.log(localTasks);
       dispatch({ type: "SET_TASKS", payload: localTasks });
     },
-    [state, dispatch, i, localTasks]
+    [dispatch, i, localTasks]
   );
 
   const handleDnd = useCallback(
@@ -154,7 +154,7 @@ export default function TaskItem({
         console.log("SWIPED");
       }
     },
-    [state.tasks, isDragging, handleSwipe, handleDelete, task, i]
+    [state.tasks, isDragging, handleSwipe, handleDelete, i]
   );
 
   return (
