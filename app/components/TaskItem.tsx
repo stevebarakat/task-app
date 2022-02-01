@@ -83,19 +83,19 @@ export default function TaskItem({
 
   const handleSwipe = useCallback(
     (task: any, isSwiped: boolean) => {
-      let swipedTask = {};
+      let currentTask = {};
       if (i === task.position) {
-        swipedTask = {
+        currentTask = {
           ...task,
           isSwiped,
         };
-        localTasks.push(swipedTask);
+        localTasks.push(currentTask);
       } else if (i !== task.position) {
-        swipedTask = {
+        currentTask = {
           ...task,
           isSwiped: false,
         };
-        localTasks.push(swipedTask);
+        localTasks.push(currentTask);
       }
       dispatch({ type: "SET_TASKS", payload: localTasks });
     },
@@ -117,7 +117,7 @@ export default function TaskItem({
 
   const handleDragEnd = useCallback(
     (info: PanInfo, taskId: string) => {
-      const dragDistance = isDragging.x ? info.offset.x : 0;
+      const dragDistance = info.offset.x;
       const taskSwiped = state.tasks.filter(
         (task: { id: string }) => task.id === taskId
       )[0];
@@ -162,12 +162,7 @@ export default function TaskItem({
         console.log("SWIPED");
       }
     },
-    [state.tasks, isDragging, handleSwipe, handleDelete, i]
-  );
-
-  console.log(
-    "currentTask: ",
-    transition.submission?.formData.get("task-name")
+    [state.tasks, handleSwipe, handleDelete, i]
   );
 
   return (
@@ -176,7 +171,6 @@ export default function TaskItem({
       transition={TASK_DELETE_TRANSITION}
       style={isDeleting ? { display: "none", opacity: 0 } : taskItem}
     >
-      {/* FIRST */}
       <motion.div
         ref={dragHandelRef}
         layout="position"
@@ -242,12 +236,7 @@ export default function TaskItem({
                   task.isCompleted || isCurrentTask ? "line-through" : "none",
                 ...inlineTextInput,
               }}
-              defaultValue={
-                transition.state === "submitting" ||
-                transition.state === "loading"
-                  ? transition.submission?.formData.get("task-name")
-                  : task.name
-              }
+              defaultValue={task.name}
               autoComplete="off"
             />
           </div>

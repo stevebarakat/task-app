@@ -167,27 +167,3 @@ button {
   border-right: none;
   border-left: none;
 }
-
-.icon-btn:hover{
-  background: var(--primary-light);
-}
-.icon-btn.toggle:before{
-  content: "⬇︎toggle";
-  position: absolute;
-  top: 0;
-  left: -1px;
-  font-size: 0.75rem;
-  opacity: 0;
-  transition: all 0.1s;
-  text-transform: capitalize;
-  font-weight: 700;
-  border: 1px solid var(--light-gray);
-  width: 55px;
-}
-
-.icon-btn.toggle:hover:before{
-  top: -20px;
-  opacity: 1;
-}
-
-

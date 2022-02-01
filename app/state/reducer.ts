@@ -1,4 +1,5 @@
-export function tasksReducer(state, action) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export function tasksReducer(state: any, action: { payload: any; type: any }) {
   const { value }: any = action.payload;
   switch (action.type) {
     case "SET_TASKS":

@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from "react";
-import { useLoaderData } from "remix";
+import { useLoaderData, useTransition } from "remix";
 import type { LoaderFunction } from "remix";
 import { TasksContext } from "~/state/context";
 import { db } from "~/utils/db.server";
@@ -21,6 +21,9 @@ export const loader: LoaderFunction = async () => {
 
 export default function App() {
   const { loaderTasks } = useLoaderData();
+  const transition = useTransition();
+
+  console.log("transition state from index ==>", transition.state);
   const initialState = {
     tasks: loaderTasks,
     filterType: "all",
