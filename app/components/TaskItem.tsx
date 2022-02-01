@@ -243,8 +243,13 @@ export default function TaskItem({
                 ...inlineTextInput,
               }}
               // defaultValue={task.name}
+              // defaultValue={
+              //   transition.state === "submitting"
+              //     ? transition.submission?.formData.get("task-name")
+              //     : task.name
+              // }
               defaultValue={
-                transition.state === "submitting"
+                transition.state === "submitting" && !task.name
                   ? transition.submission?.formData.get("task-name")
                   : task.name
               }
