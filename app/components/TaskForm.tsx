@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext } from "react";
 import { Form } from "remix";
 import TaskFormInput from "./TaskFormInput";
@@ -8,7 +9,7 @@ import Hidden from "~/components/Hidden";
 import { TasksContext } from "~/state/context";
 
 export default function TaskForm() {
-  const { state, dispatch } = useContext(TasksContext);
+  const { state, dispatch }: any = useContext(TasksContext);
 
   return !state.isSearch ? (
     <div style={taskInputWrap}>
@@ -24,7 +25,6 @@ export default function TaskForm() {
         method="post"
         onSubmit={() => {
           dispatch({ type: "SET_VALUE", payload: "" });
-          // dispatch({ type: "SET_SEARCH_TERM", payload: "" });
         }}
         action="/actions"
         style={{ display: "flex" }}

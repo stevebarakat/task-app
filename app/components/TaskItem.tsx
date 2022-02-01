@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useContext, useCallback } from "react";
 import type { Task } from "@prisma/client";
 import { motion, PanInfo } from "framer-motion";
-import { useFetcher } from "remix";
+import { useFetcher, useTransition } from "remix";
 import { useMeasurePosition } from "~/hooks/useMeasurePosition";
 import Hidden from "./Hidden";
 import { Button } from "./Button";
@@ -19,12 +20,15 @@ export default function TaskItem({
   updateOrder,
   i,
 }: any) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const localTasks: any = [];
   const fetcher = useFetcher();
+  const transition = useTransition();
   const [isDragging, setIsDragging] = useState({ x: false, y: false });
   const { state, dispatch }: any = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
-  const localTasks: any = [];
-  const [currentTask, setCurrentTask] = useState(
+
+  const [isCurrentTask, setIsCurrentTask] = useState(
     fetcher.submission?.formData.get("id") === task.id
   );
   const isDeleting =
@@ -39,7 +43,7 @@ export default function TaskItem({
   }) => {
     const { value, checked } = event.target;
     const task = state.tasks.find((task: { id: string }) => task.id === value);
-    setCurrentTask((task) => !task);
+    setIsCurrentTask((task) => !task);
     task.isCompleted = checked === "checked";
     fetcher.submit(
       {
@@ -163,6 +167,11 @@ export default function TaskItem({
     [state.tasks, isDragging, handleSwipe, handleDelete, i]
   );
 
+  console.log(
+    "currentTask: ",
+    transition.submission?.formData.get("task-name")
+  );
+
   return (
     <motion.li
       exit={TASK_DELETE_ANIMATION}
@@ -232,10 +241,12 @@ export default function TaskItem({
               id={task.id}
               style={{
                 textDecoration:
-                  task.isCompleted || currentTask ? "line-through" : "none",
+                  task.isCompleted || isCurrentTask ? "line-through" : "none",
                 ...inlineTextInput,
               }}
-              defaultValue={task.name}
+              defaultValue={
+                transition.state === "submitting" ? "saving" : task.name
+              }
               autoComplete="off"
             />
           </div>
