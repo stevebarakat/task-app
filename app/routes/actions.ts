@@ -1,6 +1,7 @@
 import type { ActionFunction } from "remix";
 import { redirect } from "remix";
 import { db } from "~/utils/db.server";
+import invariant from "tiny-invariant";
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
@@ -11,6 +12,9 @@ export const action: ActionFunction = async ({ request }) => {
       {
         const name = form.get("task-name");
         const position = parseInt(form.get("position"));
+
+        invariant(typeof name === "string");
+
         if (position) {
           await db.task.create({
             data: { name, position },
@@ -20,7 +24,7 @@ export const action: ActionFunction = async ({ request }) => {
       break;
     case "toggle":
       {
-        const id = form.get("id");
+        const id: any = form.get("id");
         const isCompleted = form.get("isCompleted") === "true";
         await db.task.update({
           where: {
@@ -34,8 +38,8 @@ export const action: ActionFunction = async ({ request }) => {
       break;
     case "update":
       {
-        const id = form.get("id");
-        const name = form.get("name");
+        const id: any = form.get("id");
+        const name: any = form.get("name");
 
         await db.task.update({
           where: {
@@ -61,21 +65,6 @@ export const action: ActionFunction = async ({ request }) => {
             },
           });
         }
-      }
-      break;
-    case "swipe":
-      {
-        const id = form.get("id");
-        const isSwiped = form.get("isSwiped");
-
-        await db.task.update({
-          where: {
-            id,
-          },
-          data: {
-            isSwiped: isSwiped === "true",
-          },
-        });
       }
       break;
     case "delete":

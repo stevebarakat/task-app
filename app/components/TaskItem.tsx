@@ -165,10 +165,10 @@ export default function TaskItem({
     [state.tasks, isDragging, handleSwipe, handleDelete, i]
   );
 
-  console.log(
-    "currentTask: ",
-    transition.submission?.formData.get("task-name")
-  );
+  // console.log(
+  //   "currentTask: ",
+  //   transition.submission?.formData.get("task-name")
+  // );
 
   return (
     <motion.li
@@ -242,9 +242,9 @@ export default function TaskItem({
                   task.isCompleted || isCurrentTask ? "line-through" : "none",
                 ...inlineTextInput,
               }}
+              // defaultValue={task.name}
               defaultValue={
-                transition.state === "submitting" ||
-                transition.state === "loading"
+                transition.state === "submitting"
                   ? transition.submission?.formData.get("task-name")
                   : task.name
               }
