@@ -1,4 +1,4 @@
-import { useReducer, useEffect, createContext } from "react";
+import { useReducer, useEffect } from "react";
 import { useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
 import { TasksContext } from "~/state/context";
@@ -48,7 +48,7 @@ export default function App() {
 }
 
 // STYLES
-const container = {
+const container: any = {
   maxWidth: "100%",
   padding: "28px 16px",
   border: "1px solid var(--light-gray)",

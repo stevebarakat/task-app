@@ -6,7 +6,7 @@ import { usePositionReorder } from "~/hooks/usePositionReorder";
 import { TasksContext } from "~/state/context";
 
 function TaskList() {
-  const { state, dispatch } = useContext(TasksContext);
+  const { state, dispatch }: any = useContext(TasksContext);
   const FILTER_MAP = {
     all: () => true,
     todo: (task: Task) => !task.isCompleted,

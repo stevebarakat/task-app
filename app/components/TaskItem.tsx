@@ -21,9 +21,9 @@ export default function TaskItem({
 }: any) {
   const fetcher = useFetcher();
   const [isDragging, setIsDragging] = useState({ x: false, y: false });
-  const { state, dispatch } = useContext(TasksContext);
+  const { state, dispatch }: any = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
-  const localTasks = [];
+  const localTasks: any = [];
   const [currentTask, setCurrentTask] = useState(
     fetcher.submission?.formData.get("id") === task.id
   );
@@ -254,13 +254,13 @@ export default function TaskItem({
 
 // STYLES
 
-const taskItem = {
+const taskItem: any = {
   position: "relative",
   display: "flex",
   alignItems: "center",
 };
 
-const taskContainer = {
+const taskContainer: any = {
   background: "var(--primary-dark)",
   display: "flex",
   width: "100%",
@@ -269,7 +269,7 @@ const taskContainer = {
   borderBottom: "1px solid var(--light-gray)",
 };
 
-const inlineTextInput = {
+const inlineTextInput: any = {
   width: "calc(100% - 35px)",
   cursor: "grab",
   outline: "none",
@@ -277,7 +277,7 @@ const inlineTextInput = {
   border: "none",
 };
 
-const deleteBtn = {
+const deleteBtn: any = {
   position: "absolute",
   width: "70px",
   top: "50%",
@@ -292,6 +292,6 @@ const deleteBtn = {
   border: "none",
 };
 
-const hidden = {
+const hidden: any = {
   display: "none",
 };

@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export function useMeasurePosition(update: {
-  (pos: number): number;
-  (arg0: { height: number; top: number }): number;
-}) {
+export function useMeasurePosition(update): any {
   // Using a `ref` to access the DOM element that the `motion.li` produces.
   // It measures its height and position, for deciding when the current
   // element being dragged should switch places with its siblings.

@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import { TasksContext } from "~/state/context";
 
 export default function TaskFormInput({ type, name, required, label }: any) {
-  const { state, dispatch } = useContext(TasksContext);
+  const { state, dispatch }: any = useContext(TasksContext);
 
   useEffect(() => {
     state.isSearch
@@ -35,7 +35,7 @@ export default function TaskFormInput({ type, name, required, label }: any) {
 }
 
 // STYLES
-const taskInputLabel = {
+const taskInputLabel: any = {
   color: "var(--light-gray)",
   fontSize: "1rem",
   lineHeight: "1.5rem",
@@ -45,7 +45,7 @@ const taskInputLabel = {
   pointerEvents: "none",
 };
 
-const taskInputField = {
+const taskInputField: any = {
   display: "flex",
   position: "relative",
   flexGrow: "1",
