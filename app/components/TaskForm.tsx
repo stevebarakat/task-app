@@ -30,7 +30,10 @@ export default function TaskForm() {
         style={{ display: "flex" }}
       >
         <Hidden name="actionName" value="create" />
-        <Hidden name="position" value={5} />
+        <Hidden
+          name="position"
+          value={state.tasks.length > 0 ? state.tasks.length + 1 : 1}
+        />
         <TaskFormInput type="text" name="task-name" label="Add Task" required />
         <Button className="icon-btn" onClick={() => null}>
           <RiAddLine />

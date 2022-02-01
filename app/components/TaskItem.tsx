@@ -34,9 +34,9 @@ export default function TaskItem({
   const isDeleting =
     fetcher.submission?.formData.get("id") === task.id &&
     fetcher.submission?.formData.get("actionName") === "delete";
-  const dragHandelRef = useMeasurePosition((pos: number) => {
-    updatePosition(i, pos);
-  });
+  const dragHandelRef = useMeasurePosition((pos: number) =>
+    updatePosition(i, pos)
+  );
 
   const handleToggle = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
