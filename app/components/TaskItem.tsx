@@ -38,9 +38,7 @@ export default function TaskItem({
     updatePosition(i, pos);
   });
 
-  const handleToggle = (event: {
-    target: { value: string; checked: string };
-  }) => {
+  const handleToggle = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
     const task = state.tasks.find((task: { id: string }) => task.id === value);
     setIsCurrentTask((task) => !task);
@@ -56,7 +54,7 @@ export default function TaskItem({
   };
 
   const handleUpdate = useCallback(
-    (event: { target: { id: string; value: string } }) => {
+    (event) => {
       const { id, value } = event.target;
       fetcher.submit(
         {
@@ -245,7 +243,10 @@ export default function TaskItem({
                 ...inlineTextInput,
               }}
               defaultValue={
-                transition.state === "submitting" ? "saving" : task.name
+                transition.state === "submitting" ||
+                transition.state === "loading"
+                  ? transition.submission?.formData.get("task-name")
+                  : task.name
               }
               autoComplete="off"
             />

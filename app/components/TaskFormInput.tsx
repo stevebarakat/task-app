@@ -1,16 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useContext } from "react";
 import { TasksContext } from "~/state/context";
-import { useTransition } from "remix";
 
 export default function TaskFormInput({ type, name, required, label }: any) {
   const { state, dispatch }: any = useContext(TasksContext);
-  const transition = useTransition();
-
-  // console.log(
-  //   "currentTask: ",
-  //   transition.submission?.formData.get("task-name")
-  // );
 
   useEffect(() => {
     state.isSearch

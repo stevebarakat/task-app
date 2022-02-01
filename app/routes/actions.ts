@@ -1,6 +1,5 @@
 import type { ActionFunction } from "remix";
 import { redirect } from "remix";
-import type { Task } from "@prisma/client";
 import { db } from "~/utils/db.server";
 
 export const action: ActionFunction = async ({ request }) => {
@@ -52,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
       {
         const taskIds = form.get("taskIds")?.split(",");
         for (let i = 0; i < taskIds.length; i++) {
-          let id = taskIds[i];
+          const id = taskIds[i];
           await db.task.update({
             where: {
               id,
@@ -96,9 +95,9 @@ export const action: ActionFunction = async ({ request }) => {
               position: "asc",
             },
           })
-        ).map((task: Task) => task.id);
+        ).map((task) => task.id);
         for (let i = 0; i < taskIds.length; i++) {
-          let id = taskIds[i];
+          const id = taskIds[i];
           await db.task.update({
             where: {
               id,
