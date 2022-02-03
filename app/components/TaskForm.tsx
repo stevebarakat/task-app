@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext } from "react";
-import { Form } from "remix";
+import { useContext, useRef, useEffect } from "react";
+import { Form, useTransition } from "remix";
 import TaskFormInput from "./TaskFormInput";
 import { Button } from "./Button";
 import { RiAddLine } from "react-icons/ri";
@@ -9,10 +9,22 @@ import Hidden from "~/components/Hidden";
 import { TasksContext } from "~/state/context";
 
 export default function TaskForm() {
+  const formRef: any = useRef();
   const { state, dispatch }: any = useContext(TasksContext);
+  const transition = useTransition();
+  const isPending =
+    transition.state === "submitting" || transition.state == "loading"
+      ? true
+      : false;
+
+  useEffect(() => {
+    if (isPending || !state.isSearch) {
+      formRef.current?.reset();
+    }
+  }, [isPending, state.isSearch]);
 
   return !state.isSearch ? (
-    <div style={taskInputWrap}>
+    <div className="task-input-wrap">
       <Button
         className="icon-btn toggle"
         onClick={() =>
@@ -22,6 +34,8 @@ export default function TaskForm() {
         <BsPencil />
       </Button>
       <Form
+        ref={formRef}
+        replace
         method="post"
         onSubmit={() => {
           dispatch({ type: "SET_VALUE", payload: "" });
@@ -34,14 +48,20 @@ export default function TaskForm() {
           name="position"
           value={state.tasks.length > 0 ? state.tasks.length + 1 : 1}
         />
-        <TaskFormInput type="text" name="task-name" label="Add Task" required />
-        <Button className="icon-btn" onClick={() => null}>
+        <TaskFormInput
+          type="text"
+          name="task-name"
+          label={isPending ? "Saving..." : "Add Task"}
+          disabled={isPending}
+          required
+        />
+        <Button className="icon-btn">
           <RiAddLine />
         </Button>
       </Form>
     </div>
   ) : (
-    <div style={taskInputWrap}>
+    <div className="task-input-wrap">
       <Button
         className="icon-btn toggle"
         onClick={() =>
@@ -53,18 +73,20 @@ export default function TaskForm() {
       <Form method="post" action="/actions" style={{ display: "flex" }}>
         <Hidden name="actionName" value="create" />
         <Hidden name="position" value={state.tasks.length} />
-        <TaskFormInput type="search" name="search-tasks" label="Search Tasks" />
-        <Button className="icon-btn">
+        <TaskFormInput
+          type="search"
+          name="search-tasks"
+          value={typeof state.value !== undefined ? state.value : ""}
+          label="Search Tasks"
+          disabled={isPending}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            dispatch({ type: "SET_VALUE", payload: e.target.value });
+          }}
+        />
+        <Button disabled={true} className="icon-btn">
           <RiAddLine />
         </Button>
       </Form>
     </div>
   );
 }
-
-// STYLES
-const taskInputWrap = {
-  display: "grid",
-  margin: "0 auto 8px",
-  gridTemplateColumns: "1fr 9fr",
-};

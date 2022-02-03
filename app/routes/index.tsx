@@ -8,34 +8,32 @@ import TaskList from "~/components/TaskList";
 import TasksFilter from "~/components/TasksFilter";
 import { tasksReducer } from "~/state/reducer";
 
-export const loader: LoaderFunction = async () => {
-  const data = {
-    loaderTasks: await db.task.findMany({
-      orderBy: {
-        position: "asc",
-      },
-    }),
-  };
-  return data;
-};
+export const loader: LoaderFunction = async () => ({
+  loaderData: await db.task.findMany({
+    orderBy: {
+      position: "asc",
+    },
+  }),
+});
 
-export default function App() {
-  // const transition = useTransition();
-  const { loaderTasks } = useLoaderData();
+export default function Index() {
+  const { loaderData } = useLoaderData();
+
   const initialState = {
-    tasks: loaderTasks,
+    tasks: loaderData,
     filterType: "all",
     isSearch: false,
     searchTerm: "",
   };
+
   const [state, dispatch] = useReducer(tasksReducer, initialState);
 
   useEffect(() => {
     dispatch({
       type: "SET_TASKS",
-      payload: loaderTasks,
+      payload: loaderData,
     });
-  }, [loaderTasks]);
+  }, [loaderData]);
 
   // console.log("transition state: ", transition.state);
 
