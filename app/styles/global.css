@@ -29,7 +29,7 @@ body {
 }
 button {
   aspect-ratio: 1/1;
-  width: 55px;
+  width: 56px;
   height: 100%;
   position: relative;
 }
@@ -166,4 +166,51 @@ button {
 [name="search-tasks"]:last-of-type {
   border-right: none;
   border-left: none;
+}
+
+.badge {
+  z-index: 88;
+  position: absolute;
+  top: 0;
+  font-size: 0.75rem;
+  font-weight: 70;
+  text-align: center;
+  line-height: 1.25;
+  border: 1px solid var(--light-gray);
+  text-transform: capitalize;
+  width: 56px;
+  padding: 2px 0;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.25s;
+}
+
+.task-input-wrap {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 9fr;
+  margin: 0 auto 8px;
+}
+
+.task-input-wrap:before {
+  content: "⬇︎Toggle";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  text-transform: capitalize;
+  font-weight: 700;
+  border: 1px solid var(--light-gray);
+  width: 56px;
+  padding: 2px 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(0);
+  transition: all 0.25s;
+}
+
+.task-input-wrap:hover:before {
+  opacity: 1;
+  transform: translateY(-20px);
 }

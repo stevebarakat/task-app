@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from "react";
-import { useLoaderData, useTransition } from "remix";
+import { useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
 import { TasksContext } from "~/state/context";
 import { db } from "~/utils/db.server";
@@ -8,36 +8,32 @@ import TaskList from "~/components/TaskList";
 import TasksFilter from "~/components/TasksFilter";
 import { tasksReducer } from "~/state/reducer";
 
-export const loader: LoaderFunction = async () => {
-  const data = {
-    loaderTasks: await db.task.findMany({
-      orderBy: {
-        position: "asc",
-      },
-    }),
-  };
-  return data;
-};
+export const loader: LoaderFunction = async () => ({
+  loaderData: await db.task.findMany({
+    orderBy: {
+      position: "asc",
+    },
+  }),
+});
 
-export default function App() {
-  const { loaderTasks } = useLoaderData();
-  const transition = useTransition();
+export default function Index() {
+  const { loaderData } = useLoaderData();
 
-  console.log("transition state from index ==>", transition.state);
   const initialState = {
-    tasks: loaderTasks,
+    tasks: loaderData,
     filterType: "all",
     isSearch: false,
     searchTerm: "",
   };
+
   const [state, dispatch] = useReducer(tasksReducer, initialState);
 
   useEffect(() => {
     dispatch({
       type: "SET_TASKS",
-      payload: loaderTasks,
+      payload: loaderData,
     });
-  }, [loaderTasks]);
+  }, [loaderData]);
 
   return (
     <div style={container}>

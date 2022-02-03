@@ -23,7 +23,6 @@ export default function TaskItem({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const localTasks: any = [];
   const fetcher = useFetcher();
-  const transition = useTransition();
   const [isDragging, setIsDragging] = useState({ x: false, y: false });
   const { state, dispatch }: any = useContext(TasksContext);
   const newIds = state.tasks.map((task: Task) => task.id);
